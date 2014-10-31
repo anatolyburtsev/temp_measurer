@@ -7,12 +7,20 @@ import os
 import os.path
 import sys
 import socket
+import subprocess as sb
 import time
 
 GRAPHITE_HOST = "localhost"
 GRAPHITE_PORT = 2003
 HOST = socket.gethostname().split('.')[0]
 TDIR='/sys/devices/platform/'
+
+#activate coretemp module of kernel
+command = "modprobe coretemp".split()
+P = sb.Popen( command, stdout=sb.PIPE, stderr=sb.PIPE )
+out, err = P.communicate()
+sys.stderr.write(err)
+
 
 tree = os.walk(TDIR)
 max_temp = 0
